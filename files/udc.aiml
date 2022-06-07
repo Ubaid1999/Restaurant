@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml>
+    <category>
+        <pattern>_ Hi I am * </pattern>
+        <template>Helo <set name="name"><star index="1"/></set>!, what can I do for?</template>
+    </category>
+  <category>
+    <pattern>Hi ^</pattern>
+    <template>
+        <random>
+            <li>Hi what can I do for you?</li>
+            <li>Hello what can I do for you?</li>
+        </random>
+    </template>
+  </category>
+    <category>
+    <pattern>Hello ^</pattern>
+    <template><srai>Hi</srai></template>
+  </category>
+   <category>
+    <pattern>My Name is * </pattern>
+    <template>Helo <set name="name"><star index="1"/></set>!, what can I do for?</template>
+  </category>
+     <category>
+    <pattern>_ your story</pattern> 
+    <template>
+     Truck Stop Gourmand is the brainchild of Gloria and Fred Smith. What started out as a food truck in 2004 has expanded into a thriving restaurant. We now have one brick-and-mortar restaurant in downtown Portland. The bigger kitchen brought with it new chefs, but each one is faithful to the philosophy that made the Smith food truck so popular to begin with: deliver fresh, local produce in inventive and delicious ways. Join us for lunch or dinner seven days a week. Or order a cake from our bakery.
+<image>https://www.istockphoto.com/photo/table-top-view-of-spicy-food-gm1316145932-403959315</image> 
+    </template>
+ 
+  </category>
+     <category>
+    <pattern>_ ABOUT ^ restaurant</pattern>
+    <template>
+        <srai>what is your story</srai></template>
+       </category>
+     <category>
+    <pattern>_ ABOUT you</pattern>
+  <template>
+        <srai>what is your story</srai></template>  </category>
+   <category>
+    <pattern>who are the restaurant owners and what is their philosophy?</pattern>
+ <template>
+        <srai>what is your story</srai></template>  </category>
+   <category>
+    <pattern>Are you open for breakfast</pattern>
+    <template>We are open from 9am to 5pm very day!</template>
+  </category>
+  <category>
+      <pattern>^ menu ^</pattern>
+      <template>
+          In keeping with our commitment to giving you only fresh local ingredients, our menu changes daily to accommodate the produce we pick up in the morning. You can find today's menu on our website.
+       <break/>Which menu do you want to see?
+       <think><set name="count">0</set></think>
+  <condition name="count">
+    <li><value>3</value></li>
+    <li>
+    
+      <button>
+          <text>  <set name="count">
+        <map><name>successor</name><get name="count"/></map>
+      </set>  <map><name>menumaps</name><get name="count"/></map></text>
+          <postback><map><name>menumaps</name><get name="count"/></map></postback>
+      </button>
+        <break/>
+      <loop/>
+    </li>
+  </condition>
+      </template>
+  </category>
+  <category>
+      <pattern>cancel ^ order</pattern>
+      <template>
+          I need the order number to cancel the order for you. Note: is A nnnnnn. The A's represents one uppercase letters, and the n's represent 6 numbers. If you don't know the order number, please call us at 958-234-3456 to cancel over the phone.
+       </template>
+  </category>
+  
+  <category>
+      <pattern>Yes ^</pattern>
+      <template>
+        OK. The order <get name="ordernumber"></get> is canceled. We hope we get the opportunity to bake a cake for you sometime soon.
+        <break/>Goodbye
+        <condition name="name">
+            <li><value>unknown</value></li>
+            <li> <get name="name"></get></li>
+        </condition>
+      </template>
+  </category>
+   <category>
+      <pattern>Correct</pattern>
+      <template> <srai>Yes</srai></template>
+  </category>
+     <category>
+      <pattern>Please do</pattern>
+      <template> <srai>Yes</srai></template>
+  </category>
+     <category>
+      <pattern>Right ^</pattern>
+      <template> <srai>Yes</srai></template>
+  </category>
+  <category>
+      <pattern>food</pattern>
+      <template> <srai>menu</srai></template>
+  </category>
+  <category>
+      <pattern>specials</pattern>
+      <template> <srai>menu</srai></template>
+  </category>
+  <category>
+      <pattern>cuisine</pattern>
+      <template><srai>menu</srai></template>
+  </category>
+  <category>
+      <pattern>Standard</pattern>
+      <template>To see our menu, go to the <a href="https://www.example.com/menu.html" target="blank">menu</a> page on our website</template>
+  </category>
+  <category>
+      <pattern>Cake Shop</pattern>
+      <template>To see our cake shop menu, go to the <a href="https://www.example.com/menu.html" target="blank">cake shop menu</a> page on our website.</template>
+  </category>
+  <category>
+      <pattern>Vegeterian</pattern>
+      <template> To see our vegetarian menu, go to the <a href="https://www.example.com/vegetarian-menu.html" target="blank">vegetarian menu</a> page on our website.</template>
+  </category>
+  <category>
+      <pattern><set>alphabet</set> <set>number</set></pattern>
+      <template>
+          
+ <think>  <set name="ordernumber"><input/></set>
+              <set name="length"><srai>XLENGTH  <explode><get name="ordernumber"></get> </explode></srai>
+          </set>
+           <set name="XEQ"><srai>XEQ <explode><get name="length"></get> </explode> xs 8 </srai>
+          </set>
+        
+         </think>
+                    <condition name="XEQ">
+                          <li value="FALSE"><srai>INCORRECT ORDER</srai></li>
+                          <li>
+                              Just to confirm, you want to cancel order <set name="ordernumber"><star index= "1"/></set>?
+                              <learn>
+                                  <category>
+                                      <pattern>_ what is my order number</pattern>
+                                      <template>Your order number is <get name="ordernumber"></get></template>
+                                  </category>
+                              </learn>
+                      </li>
+                    </condition> 
+      </template>
+  </category>
+  <category>
+      <pattern>INCORRECT ORDER</pattern>
+      <template>
+          <think><set name="final">FALSE</set></think>The correct format for our order numbers is A nnnnnn. The A's represents one uppercase letters, and the n's represent 6 numbers. Do you have an order number in that format?
+      </template>
+  </category>
+     <category>
+    <pattern>*</pattern>
+    <template>I have no answer for that.</template>
+  </category>
+</aiml>
